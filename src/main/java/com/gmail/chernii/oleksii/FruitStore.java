@@ -24,7 +24,10 @@ import java.util.stream.Collectors;
 
 public class FruitStore {
     @JsonIgnore
-    private static final Logger logger = Logger.getLogger(FruitStore.class);
+    private static final Logger LOGGER = Logger.getLogger(FruitStore.class);
+    @JsonIgnore
+    private static final String DATE_FORMAT = "dd/MM/yyyy";
+
     private List<Fruit> fruits;
 
     public FruitStore() {
@@ -49,7 +52,7 @@ public class FruitStore {
             FruitStore fruitsToAdd = objectMapper.readValue(bufferedReader, FruitStore.class);
             fruits.addAll(fruitsToAdd.getFruits());
         } catch (IOException e) {
-            logger.error(e.getMessage());
+            LOGGER.error(e.getMessage());
         }
     }
 
@@ -57,9 +60,8 @@ public class FruitStore {
         try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(pathToJsonFile))) {
             ObjectMapper objectMapper = getMapper();
             objectMapper.writeValue(bufferedWriter, fruits);
-            bufferedWriter.flush();
         } catch (IOException e) {
-            logger.error(e.getMessage());
+            LOGGER.error(e.getMessage());
         }
     }
 
@@ -69,7 +71,7 @@ public class FruitStore {
             this.fruits = objectMapper.readValue(bufferedReader, new TypeReference<List<Fruit>>() {
             });
         } catch (IOException e) {
-            logger.error(e.getMessage());
+            LOGGER.error(e.getMessage());
         }
     }
 
@@ -91,7 +93,7 @@ public class FruitStore {
     }
 
     public List<Fruit> getAddedFruits(Date date, FruitType type) {
-        return getSpoiledFruits(date).stream().filter(e -> e.getFruitType() == type).collect(Collectors.toList());
+        return getAddedFruits(date).stream().filter(e -> e.getFruitType() == type).collect(Collectors.toList());
     }
 
     private Date spoiledFruitDate(Fruit fruit) {
@@ -105,7 +107,7 @@ public class FruitStore {
 
     private ObjectMapper getMapper(){
         ObjectMapper objectMapper = new ObjectMapper();
-        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        DateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT);
         objectMapper.setDateFormat(dateFormat);
         return objectMapper;
     }
