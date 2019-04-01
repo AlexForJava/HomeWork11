@@ -1,15 +1,16 @@
 package com.gmail.chernii.oleksii;
 
-
-import junit.framework.TestCase;
-import org.junit.Before;
 import org.junit.Test;
 
 import java.io.File;
 import java.util.Calendar;
 import java.util.Date;
 
-public class FruitStoreTest extends TestCase {
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
+public class FruitStoreTest {
 
 
     @Test
